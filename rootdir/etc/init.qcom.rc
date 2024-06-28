@@ -50,6 +50,11 @@ on init
     write /sys/bus/msm_subsys/devices/subsys3/restart_level RELATED
     write /sys/bus/msm_subsys/devices/subsys4/restart_level RELATED
 
+    # Logger
+    start boot_log
+    start boot_log_crash
+    start boot_log_kernel
+
 on early-boot
     # Allow subsystem (modem etc) debugging
     write /sys/kernel/boot_adsp/boot 1
@@ -67,6 +72,11 @@ on early-boot
     chmod 0664 /sys/class/graphics/fb0/mode
     chown system graphics /sys/class/graphics/fb0/msm_cmd_autorefresh_en
     chmod 0664 /sys/class/graphics/fb0/msm_cmd_autorefresh_en
+
+    # Logger
+    start boot_log
+    start boot_log_crash
+    start boot_log_kernel
 
 on boot
     chown system system /sys/bus/i2c/devices/3-0038/set_cover_mode
@@ -102,6 +112,12 @@ on boot
 
     # Create hvdcp_opti directory
     mkdir /mnt/vendor/persist/hvdcp_opti 0770 root system
+
+on post-fs
+    # Logger
+    start boot_log
+    start boot_log_crash
+    start boot_log_kernel
 
 # msm specific files that need to be created on /data
 on post-fs-data
@@ -320,3 +336,28 @@ service vendor.sensors-hal-1-0 /vendor/bin/hw/android.hardware.sensors@1.0-servi
     group system wakelock uhid input context_hub
     capabilities BLOCK_SUSPEND
     rlimit rtprio 10 10
+
+# Logger
+service boot_log /system/bin/logcat -b all -D -f /cache/boot_log_full.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+service boot_log_crash /system/bin/logcat -b crash -D -f /cache/boot_log_crash.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+service boot_log_kernel /system/bin/logcat -b kernel -D -f /cache/boot_log_kernel.txt
+    class main
+    user root
+    group root system
+    disabled
+    oneshot
+on property:sys.boot_completed=1
+# Stop the logger service
+    stop boot_log
+    stop boot_log_crash
+    stop boot_log_kernel
