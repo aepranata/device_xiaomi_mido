@@ -19,6 +19,8 @@ $(call inherit-product, device/xiaomi/mido/full_mido.mk)
 
 # Inherit some common AfterlifeOS stuff.
 $(call inherit-product, vendor/afterlife/config/common_full_phone.mk)
+AFTERLIFE_MAINTAINER := aepranata
+TARGET_FACE_UNLOCK_SUPPORTED := true
 
 # Device identifier. This must come after all inclusions
 PRODUCT_NAME := afterlife_mido
