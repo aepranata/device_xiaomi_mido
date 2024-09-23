@@ -24,3 +24,5 @@ TARGET_FACE_UNLOCK_SUPPORTED := true
 
 # Device identifier. This must come after all inclusions
 PRODUCT_NAME := afterlife_mido
+
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay-afterlife
