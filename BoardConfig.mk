@@ -44,7 +44,6 @@ TARGET_SYSTEM_PROP := $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP := $(DEVICE_PATH)/vendor.prop
 
 # Kernel
-TARGET_KERNEL_CONFIG := mido_defconfig
 BOARD_KERNEL_BASE := 0x80000000
 BOARD_KERNEL_CMDLINE := androidboot.hardware=qcom
 BOARD_KERNEL_CMDLINE += msm_rtb.filter=0x237
@@ -58,6 +57,11 @@ BOARD_KERNEL_CMDLINE += androidboot.boot_devices=soc/7824900.sdhci
 BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
 BOARD_KERNEL_PAGESIZE :=  2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x01000000 --tags_offset 0x00000100
+ifeq ($(INCLUDE_KSU),true)
+    TARGET_KERNEL_CONFIG := mido-ksu_defconfig
+else
+    TARGET_KERNEL_CONFIG := mido_defconfig
+endif
 TARGET_KERNEL_SOURCE := kernel/xiaomi/mido
 TARGET_KERNEL_VERSION := 4.9
 
