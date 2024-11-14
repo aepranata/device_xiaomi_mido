@@ -155,6 +155,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <name>IRadioConfig</name>
             <instance>default</instance>
         </interface>
+        <fqname>@1.0::IRadioConfig/default</fqname>
     </hal>
     <hal format="hidl">
         <name>android.hardware.secure_element</name>
